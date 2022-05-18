@@ -1,7 +1,11 @@
-import { User } from './UserInterface';
-import { Task } from './TaskInterface';
+import { User, UserSchema } from './UserInterface';
+import { Task, TaskSchema } from './TaskInterface';
+import IdSchema from './IdInterface';
 
 export {
   User,
-  Task
+  UserSchema,
+  Task,
+  TaskSchema,
+  IdSchema
 }
