@@ -70,7 +70,7 @@ class TaskController extends Controller<Task> {
     const { body } = req;
     try {
       const task = await this.service.update(id, body);
-      if (!task) return res.status(StatusCode.NOT_FOUND).json({ error: 'Object not found' });
+      if (!task) return res.status(StatusCode.NOT_FOUND).json({ error: 'Task not found' });
       if ('error' in task) {
         const { error } = task;
         return res.status(StatusCode.BAD_REQUEST).json({ error: error.issues[0].message });
@@ -89,7 +89,7 @@ class TaskController extends Controller<Task> {
     const { id } = req.params;
     try {
       const task = await this.service.delete(id);
-      if (!task) return res.status(StatusCode.NOT_FOUND).json({ error: 'Object not found' });
+      if (!task) return res.status(StatusCode.NOT_FOUND).json({ error: 'Task not found' });
       if ('error' in task) {
         const { error } = task;
         return res.status(StatusCode.BAD_REQUEST).json({ error: error.issues[0].message });
