@@ -6,7 +6,7 @@ const TaskSchema = z.object({
   user_id: z.string({
     required_error: 'user_id is required',
     invalid_type_error: 'user_id must be a number',
-  }),
+  }).min(24, { message: 'Id must have 24 hexadecimal characters' }),
   description: z.string({
     required_error: 'description is required',
     invalid_type_error: 'description must be a string',

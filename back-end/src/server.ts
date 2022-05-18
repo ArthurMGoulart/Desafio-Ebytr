@@ -3,10 +3,11 @@ import App from './app';
 import CustomRouter from './routes/CustomRouter';
 
 import {
-  UserController
+  UserController,
+  TaskController
 } from './controllers';
 
-import { User } from './interfaces';
+import { User, Task } from './interfaces';
 
 const server = new App();
 
@@ -16,6 +17,14 @@ const userRouter = new CustomRouter<User>();
 
 userRouter.addRoute(userController);
 
+const taskController = new TaskController();
+
+const taskRouter = new CustomRouter<Task>(); 
+
+taskRouter.addRoute(taskController);
+
 server.addRouter(userRouter.router);
+
+server.addRouter(taskRouter.router);
 
 export default server;
