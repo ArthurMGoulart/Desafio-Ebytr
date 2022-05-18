@@ -1,16 +1,16 @@
 import { Request, Response } from 'express';
 import Controller, { RequestWithBody, ResponseError } from './Controller';
-import { UserService } from '../services';
-import { User } from '../interfaces';
+import { TaskService } from '../services';
+import { Task } from '../interfaces';
 
-class UserController extends Controller<User> {
+class TaskController extends Controller<Task> {
   private $route: string;
 
-  public service: UserService;
+  public service: TaskService;
 
   constructor(
-    service = new UserService(),
-    route = '/users',
+    service = new TaskService(),
+    route = '/tasks',
   ) {
     super(service);
     this.$route = route;
@@ -24,18 +24,18 @@ class UserController extends Controller<User> {
   get route() { return this.$route; }
 
   async create(
-    req: RequestWithBody<User>,
-    res: Response<User | ResponseError>,
+    req: RequestWithBody<Task>,
+    res: Response<Task | ResponseError>,
   ): Promise<typeof res> {
     const { body } = req;
     try {
-      const user = await this.service.create(body);
-      if (!user) return res.status(500).json({ error: 'Null Created' });
-      if ('error' in user) {
-        const { error } = user;
+      const task = await this.service.create(body);
+      if (!task) return res.status(500).json({ error: 'Null Created' });
+      if ('error' in task) {
+        const { error } = task;
         return res.status(400).json({ error: error.issues[0].message });
       }
-      return res.status(201).json(user);
+      return res.status(201).json(task);
     } catch (err) {
       const { message } = err as Error;
       return res.status(500).json({ error: message });
@@ -44,17 +44,17 @@ class UserController extends Controller<User> {
 
   async readOne(
     req: Request,
-    res: Response<User | ResponseError>,
+    res: Response<Task | ResponseError>,
   ): Promise<typeof res> {
     const { id } = req.params;
     try {
-      const user = await this.service.readOne(id);
-      if (!user) return res.status(404).json({ error: 'Object not found' });
-      if ('error' in user) {
-        const { error } = user;
+      const task = await this.service.readOne(id);
+      if (!task) return res.status(404).json({ error: 'Object not found' });
+      if ('error' in task) {
+        const { error } = task;
         return res.status(400).json({ error: error.issues[0].message });
       }
-      return res.status(200).json(user);
+      return res.status(200).json(task);
     } catch (err) {
       const { message } = err as Error;
       return res.status(500).json({ error: message });
@@ -62,19 +62,19 @@ class UserController extends Controller<User> {
   }
 
   async update(
-    req: RequestWithBody<User>,
-    res: Response<User | ResponseError>,
+    req: RequestWithBody<Task>,
+    res: Response<Task | ResponseError>,
   ): Promise<typeof res> {
     const { id } = req.params;
     const { body } = req;
     try {
-      const user = await this.service.update(id, body);
-      if (!user) return res.status(404).json({ error: 'Object not found' });
-      if ('error' in user) {
-        const { error } = user;
+      const task = await this.service.update(id, body);
+      if (!task) return res.status(404).json({ error: 'Object not found' });
+      if ('error' in task) {
+        const { error } = task;
         return res.status(400).json({ error: error.issues[0].message });
       }
-      return res.status(200).json(user);
+      return res.status(200).json(task);
     } catch (err) {
       const { message } = err as Error;
       return res.status(500).json({ error: message });
@@ -83,17 +83,17 @@ class UserController extends Controller<User> {
 
   async delete(
     req: Request,
-    res: Response<User | ResponseError>,
+    res: Response<Task | ResponseError>,
   ): Promise<typeof res> {
     const { id } = req.params;
     try {
-      const user = await this.service.delete(id);
-      if (!user) return res.status(404).json({ error: 'Object not found' });
-      if ('error' in user) {
-        const { error } = user;
+      const task = await this.service.delete(id);
+      if (!task) return res.status(404).json({ error: 'Object not found' });
+      if ('error' in task) {
+        const { error } = task;
         return res.status(400).json({ error: error.issues[0].message });
       }
-      return res.status(204).json(user);
+      return res.status(204).json(task);
     } catch (err) {
       const { message } = err as Error;
       return res.status(500).json({ error: message });
@@ -101,4 +101,4 @@ class UserController extends Controller<User> {
   }
 }
 
-export default UserController;
+export default TaskController;
