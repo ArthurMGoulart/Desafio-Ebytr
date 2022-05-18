@@ -3,7 +3,7 @@ import { z } from 'zod';
 const StatusEnum = z.enum(["pendente", "em andamento", "pronto"]);
 
 const TaskSchema = z.object({
-  user_id: z.number({
+  user_id: z.string({
     required_error: 'user_id is required',
     invalid_type_error: 'user_id must be a number',
   }),
@@ -14,6 +14,6 @@ const TaskSchema = z.object({
   status: StatusEnum
 });
 
-export type Car = z.infer<typeof TaskSchema>;
+export type Task = z.infer<typeof TaskSchema>;
 
 export { TaskSchema };
