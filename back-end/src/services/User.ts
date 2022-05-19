@@ -1,13 +1,17 @@
-import { User, UserSchema, IdSchema } from '../interfaces';
-import Service, { ServiceError } from './Service';
+import { User, UserSchema, IdSchema, UserLogin, UserLoginSchema } from '../interfaces';
+import { ServiceError } from './Service';
 import { UserModel } from '../models';
+import { Model } from '../interfaces';
 
-class UserService extends Service<User> {
-  constructor(model = new UserModel()) {
-    super(model);
+class UserService {
+
+  protected model: Model<User>;
+
+  constructor() {
+    this.model = new UserModel();
   }
 
-  create = async (obj: User): Promise<User | ServiceError | null> => {
+  signUp = async (obj: User): Promise<User | ServiceError | null> => {
     const parsedUser = UserSchema.safeParse(obj);
     if (!parsedUser.success) {
       return { error: parsedUser.error };
@@ -15,35 +19,15 @@ class UserService extends Service<User> {
     return this.model.create(obj);
   };
 
-  readOne = async (id: string): Promise<User | ServiceError | null> => {
-    const parsedId = IdSchema.safeParse({ id });
-    if (!parsedId.success) {
-      return { error: parsedId.error };
+  login = async (obj: UserLogin): Promise<User | ServiceError | null> => {
+    const parsedUserLogin = UserLoginSchema.safeParse(obj);
+    if (!parsedUserLogin.success) {
+      return { error: parsedUserLogin.error };
     }
     const UserFound = this.model.readOne(id);
     return UserFound;
   };
 
-  update = async (id: string, obj: User): Promise<User | ServiceError | null> => {
-    const parsedId = IdSchema.safeParse({ id });
-    if (!parsedId.success) {
-      return { error: parsedId.error };
-    }
-    const parsedUser = UserSchema.safeParse(obj);
-    if (!parsedUser.success) {
-      return { error: parsedUser.error };
-    }
-    return this.model.update(id, obj);
-  };
-
-  delete = async (id: string): Promise<User | ServiceError | null> => {
-    const parsedId = IdSchema.safeParse({ id });
-    if (!parsedId.success) {
-      return { error: parsedId.error };
-    }
-    const UserFound = this.model.delete(id);
-    return UserFound;
-  };
 }
 
 export default UserService;
