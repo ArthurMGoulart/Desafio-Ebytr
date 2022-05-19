@@ -1,5 +1,5 @@
 import { Task, TaskSchema, IdSchema } from '../interfaces';
-import Service, { ServiceError } from './Service';
+import Service, { ServiceError } from './ServiceCRUD';
 import { TaskModel } from '../models';
 
 class TaskService extends Service<Task> {
