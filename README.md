@@ -6,13 +6,9 @@
 
 2. Entre na pasta back-end
   
-  - Para isso, use o seguinte comando: `cd back-end`
+  - Para isso, use o seguinte comando: `cd back-end && cd src`
 
-3. Instale as dependências
-
-  - Para isso, use o seguinte comando: `npm install`
-
-4. Crie e configure o arquivo .env
+3. Crie e configure o arquivo .env
   
   - Para isso, use o seguinte comando: `touch .env`
 
@@ -23,7 +19,10 @@
     NODE_ENV=development
     ```
 
- 5. Inicie a api
+4. Volte para a pasta principal
+  - Para isso, use o seguinte comando: `cd .. && cd ..`
+
+5. Inicie a aplicação
   - Para isso, use o seguinte comando: `npm start`
 
 ## API Documentation:

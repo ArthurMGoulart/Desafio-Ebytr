@@ -1,6 +1,6 @@
 #! /bin/bash
 PATH=$(npm bin):$PATH
-export NODE_ENV=development
+export NODE_ENV=production
 
 function initialize_back_end () {
   printf "\n> ASYNC: Instalando o back-end e inicializando a api\n"

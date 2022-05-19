@@ -2,7 +2,7 @@
 
 printf "\n> Preparando o campo pra execução do pm2\n\n"
 PATH=$(npm bin):$PATH
-export NODE_ENV=development
+export NODE_ENV=production
 pm2 stop all | grep 'PM2'
 pm2 delete all | grep 'PM2'
 kill -9 $(lsof -t -i:3000) &> /dev/null & kill -9 $(lsof -t -i:3001) &> /dev/null
