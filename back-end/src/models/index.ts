@@ -1,7 +1,8 @@
-import UserModel from "./MongoModelUser";
+import UserModel, { UserSchema } from "./MongoModelUser";
 import TaskModel from "./Task";
 
 export {
   UserModel,
+  UserSchema,
   TaskModel,
 }
