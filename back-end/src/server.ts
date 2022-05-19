@@ -1,13 +1,11 @@
 import App from './app';
 
-import { CustomRouterCRUD, UserRouter } from './routes';
+import { TaskRouter, UserRouter } from './routes';
 
 import {
   UserController,
   TaskController
 } from './controllers';
-
-import { Task } from './interfaces';
 
 const server = new App();
 
@@ -19,7 +17,7 @@ userRouter.addRoute(userController);
 
 const taskController = new TaskController();
 
-const taskRouter = new CustomRouterCRUD<Task>(); 
+const taskRouter = new TaskRouter(); 
 
 taskRouter.addRoute(taskController);
 

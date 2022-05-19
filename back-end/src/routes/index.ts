@@ -1,6 +1,6 @@
-import CustomRouterCRUD from "./CustomRouter";
+import TaskRouter from "./TaskRouter";
 import UserRouter from "./UserRouter";
 
 export {
-  CustomRouterCRUD, UserRouter
+  TaskRouter, UserRouter
 }

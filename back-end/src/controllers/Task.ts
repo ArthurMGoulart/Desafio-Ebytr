@@ -3,6 +3,7 @@ import Controller, { RequestWithBody, ResponseError } from './ControllerCRUD';
 import { TaskService } from '../services';
 import { Task } from '../interfaces';
 import StatusCode from '../enums';
+import { CustomError } from '../utils';
 
 class TaskController extends Controller<Task> {
   private $route: string;
@@ -31,13 +32,11 @@ class TaskController extends Controller<Task> {
     const { body } = req;
     try {
       const task = await this.service.create(body);
-      if (!task) return res.status(StatusCode.INTERNAL_SERVER_ERROR).json({ error: 'Null Created' });
-      if ('error' in task) {
-        const { error } = task;
-        return res.status(StatusCode.BAD_REQUEST).json({ error: error.issues[0].message });
-      }
       return res.status(StatusCode.CREATED).json(task);
     } catch (err) {
+      if (err instanceof CustomError) {
+        return res.status(err.status).json({ error: err.message });
+      }
       const { message } = err as Error;
       return res.status(StatusCode.INTERNAL_SERVER_ERROR).json({ error: message });
     }
@@ -50,13 +49,15 @@ class TaskController extends Controller<Task> {
     const { id } = req.params;
     try {
       const task = await this.service.readOne(id);
-      if (!task) return res.status(StatusCode.NOT_FOUND).json({ error: 'Object not found' });
-      if ('error' in task) {
-        const { error } = task;
-        return res.status(StatusCode.BAD_REQUEST).json({ error: error.issues[0].message });
-      }
+      if (!task) return res.status(StatusCode.NOT_FOUND).json({ error: 'Task not found' });
+      const { user_id } = task;
+      const { id: userId } = res.locals.tokenData;
+      if (userId !== user_id) return res.status(StatusCode.UNAUTHORIZED).json({ error: 'Not the user who created'});
       return res.status(StatusCode.OK).json(task);
     } catch (err) {
+      if (err instanceof CustomError) {
+        return res.status(err.status).json({ error: err.message });
+      }
       const { message } = err as Error;
       return res.status(StatusCode.INTERNAL_SERVER_ERROR).json({ error: message });
     }
@@ -69,14 +70,13 @@ class TaskController extends Controller<Task> {
     const { id } = req.params;
     const { body } = req;
     try {
-      const task = await this.service.update(id, body);
-      if (!task) return res.status(StatusCode.NOT_FOUND).json({ error: 'Task not found' });
-      if ('error' in task) {
-        const { error } = task;
-        return res.status(StatusCode.BAD_REQUEST).json({ error: error.issues[0].message });
-      }
-      return res.status(StatusCode.OK).json(task);
+      const taskUpdated = await this.service.update(id, body);
+      if (!taskUpdated) return res.status(StatusCode.NOT_FOUND).json({ error: 'Task not found' });
+      return res.status(StatusCode.OK).json(taskUpdated);
     } catch (err) {
+      if (err instanceof CustomError) {
+        return res.status(err.status).json({ error: err.message });
+      }
       const { message } = err as Error;
       return res.status(StatusCode.INTERNAL_SERVER_ERROR).json({ error: message });
     }
@@ -90,12 +90,11 @@ class TaskController extends Controller<Task> {
     try {
       const task = await this.service.delete(id);
       if (!task) return res.status(StatusCode.NOT_FOUND).json({ error: 'Task not found' });
-      if ('error' in task) {
-        const { error } = task;
-        return res.status(StatusCode.BAD_REQUEST).json({ error: error.issues[0].message });
-      }
       return res.status(StatusCode.NO_CONTENT).json(task);
     } catch (err) {
+      if (err instanceof CustomError) {
+        return res.status(err.status).json({ error: err.message });
+      }
       const { message } = err as Error;
       return res.status(StatusCode.INTERNAL_SERVER_ERROR).json({ error: message });
     }

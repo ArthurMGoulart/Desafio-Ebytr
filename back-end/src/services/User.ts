@@ -1,5 +1,4 @@
 import { User, UserSchema, UserLogin, UserLoginSchema } from '../interfaces';
-import { ServiceError } from './ServiceCRUD';
 import { UserModel } from '../models';
 import { CustomError } from '../utils';
 import StatusCode from '../enums';
@@ -15,7 +14,7 @@ class UserService {
     this.model = new UserModel();
   }
 
-  signUp = async ({ name, email, password }: User): Promise<UserLogged | ServiceError> => {
+  signUp = async ({ name, email, password }: User): Promise<UserLogged> => {
     const parsedUser = UserSchema.safeParse({ name, email, password });
     if (!parsedUser.success) {
       throw new CustomError(StatusCode.BAD_REQUEST, parsedUser.error.issues[0].message)
@@ -41,7 +40,7 @@ class UserService {
     return UserLogged;
   };
 
-  login = async ({ email, password }: UserLogin): Promise<UserLogged | ServiceError> => {
+  login = async ({ email, password }: UserLogin): Promise<UserLogged> => {
     const parsedUserLogin = UserLoginSchema.safeParse({ email, password });
     if (!parsedUserLogin.success) {
       throw new CustomError(StatusCode.BAD_REQUEST, parsedUserLogin.error.issues[0].message);

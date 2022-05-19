@@ -1,45 +1,47 @@
 import { Task, TaskSchema, IdSchema } from '../interfaces';
-import Service, { ServiceError } from './ServiceCRUD';
+import Service from './ServiceCRUD';
 import { TaskModel } from '../models';
+import { CustomError } from '../utils';
+import StatusCode from '../enums';
 
 class TaskService extends Service<Task> {
   constructor(model = new TaskModel()) {
     super(model);
   }
 
-  create = async (obj: Task): Promise<Task | ServiceError | null> => {
+  create = async (obj: Task): Promise<Task> => {
     const parsedTask = TaskSchema.safeParse(obj);
     if (!parsedTask.success) {
-      return { error: parsedTask.error };
+      throw new CustomError(StatusCode.BAD_REQUEST, parsedTask.error.issues[0].message);
     }
     return this.model.create(obj);
   };
 
-  readOne = async (id: string): Promise<Task | ServiceError | null> => {
+  readOne = async (id: string): Promise<Task | null> => {
     const parsedId = IdSchema.safeParse({ id });
     if (!parsedId.success) {
-      return { error: parsedId.error };
+      throw new CustomError(StatusCode.BAD_REQUEST, parsedId.error.issues[0].message);
     }
     const TaskFound = this.model.readOne(id);
     return TaskFound;
   };
 
-  update = async (id: string, obj: Task): Promise<Task | ServiceError | null> => {
+  update = async (id: string, obj: Task): Promise<Task | null> => {
     const parsedId = IdSchema.safeParse({ id });
     if (!parsedId.success) {
-      return { error: parsedId.error };
+      throw new CustomError(StatusCode.BAD_REQUEST, parsedId.error.issues[0].message);
     }
     const parsedTask = TaskSchema.safeParse(obj);
     if (!parsedTask.success) {
-      return { error: parsedTask.error };
+      throw new CustomError(StatusCode.BAD_REQUEST, parsedTask.error.issues[0].message);
     }
     return this.model.update(id, obj);
   };
 
-  delete = async (id: string): Promise<Task | ServiceError | null> => {
+  delete = async (id: string): Promise<Task | null> => {
     const parsedId = IdSchema.safeParse({ id });
     if (!parsedId.success) {
-      return { error: parsedId.error };
+      throw new CustomError(StatusCode.BAD_REQUEST, parsedId.error.issues[0].message);
     }
     const TaskFound = this.model.delete(id);
     return TaskFound;
