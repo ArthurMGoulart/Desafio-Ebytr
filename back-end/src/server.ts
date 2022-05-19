@@ -1,25 +1,25 @@
 import App from './app';
 
-import CustomRouter from './routes/CustomRouter';
+import { CustomRouterCRUD, UserRouter } from './routes';
 
 import {
   UserController,
   TaskController
 } from './controllers';
 
-import { User, Task } from './interfaces';
+import { Task } from './interfaces';
 
 const server = new App();
 
 const userController = new UserController();
 
-const userRouter = new CustomRouter<User>();
+const userRouter = new UserRouter();
 
 userRouter.addRoute(userController);
 
 const taskController = new TaskController();
 
-const taskRouter = new CustomRouter<Task>(); 
+const taskRouter = new CustomRouterCRUD<Task>(); 
 
 taskRouter.addRoute(taskController);
 

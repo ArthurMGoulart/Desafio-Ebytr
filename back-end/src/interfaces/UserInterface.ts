@@ -30,4 +30,11 @@ export type User = z.infer<typeof UserSchema>;
 
 export type UserLogin = z.infer<typeof UserLoginSchema>;
 
+export type UserLogged = {
+  id: string,
+  name: string,
+  email: string,
+  token: string,
+}
+
 export { UserSchema, UserLoginSchema };

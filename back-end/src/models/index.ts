@@ -1,4 +1,4 @@
-import UserModel from "./User";
+import UserModel from "./MongoModelUser";
 import TaskModel from "./Task";
 
 export {

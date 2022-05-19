@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import Service from '../services/Service';
+import Service from '../services/ServiceCRUD';
 
 export type ResponseError = {
   error: unknown;
@@ -16,7 +16,7 @@ enum ControllerErrors {
   badRequest = 'Bad request',
 }
 
-abstract class Controller<T> {
+abstract class ControllerCRUD<T> {
   abstract route: string;
 
   protected errors = ControllerErrors;
@@ -57,4 +57,4 @@ abstract class Controller<T> {
   ): Promise<typeof res>;
 }
 
-export default Controller;
+export default ControllerCRUD;

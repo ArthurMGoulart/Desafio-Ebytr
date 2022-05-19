@@ -1,17 +1,18 @@
-import Controller from "../controllers/Controller";
-import { User } from "../interfaces";
-import CustomRouter from "./CustomRouter";
+import { Router } from 'express';
+import { UserController } from "../controllers";
 
-class UserRouter extends CustomRouter<User> {
+class UserRouter {
+
+  public router: Router;
 
   constructor() {
-    super();
+    this.router = Router();
   }
 
-  addRoute(controller: Controller<User>, route: string = controller.route): void {
+  addRoute(controller: UserController): void {
     {
-      this.router.post(route, controller.signIn);
-      this.router.post(route, controller.signUp);
+      this.router.post('/signUp', controller.signUp);
+      this.router.post('/login', controller.login);
     }
   }
   

@@ -1,6 +1,6 @@
 import { Schema, model as createModel, Document } from 'mongoose';
 import { Task } from '../interfaces';
-import MongoModel from './MongoModel';
+import MongoModelCRUD from './MongoModelCRUD';
 
 export interface TaskDocument extends Task, Document { }
 
@@ -13,7 +13,7 @@ export const TaskSchema = new Schema<TaskDocument>(
   { versionKey: false },
 );
 
-class TaskModel extends MongoModel<Task> {
+class TaskModel extends MongoModelCRUD<Task> {
   constructor(model = createModel('Tasks', TaskSchema)) {
     super(model);
   }

@@ -7,10 +7,10 @@ const jwtOptions: SignOptions = {
   algorithm: 'HS256',
 };
 
-const SECRET = readFileSync('jwt.evaluation.key', { encoding: 'utf8' });
+const JWT_KEY = readFileSync(`${process.cwd()}/src/jwt.evaluation.key`);
 
-const signToken = (data: ITokenData) => sign({ ...data }, SECRET, jwtOptions);
+const signToken = (data: ITokenData) => sign({ ...data }, JWT_KEY, jwtOptions);
 
-const verifyToken = (token:string) => verify(token, SECRET, jwtOptions);
+const verifyToken = (token:string) => verify(token, JWT_KEY, jwtOptions);
 
 export { signToken, verifyToken };

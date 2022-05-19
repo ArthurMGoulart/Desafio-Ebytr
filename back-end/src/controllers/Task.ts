@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import Controller, { RequestWithBody, ResponseError } from './Controller';
+import Controller, { RequestWithBody, ResponseError } from './ControllerCRUD';
 import { TaskService } from '../services';
 import { Task } from '../interfaces';
 import StatusCode from '../enums';

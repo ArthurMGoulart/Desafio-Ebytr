@@ -1,40 +1,35 @@
-import { Request, Response } from 'express';
-import { RequestWithBody, ResponseError } from './Controller';
+import { Response } from 'express';
+import { RequestWithBody, ResponseError } from './ControllerCRUD';
 import { UserService } from '../services';
 import { User, UserLogin } from '../interfaces';
 import StatusCode from '../enums';
+import { CustomError } from '../utils';
+import { UserLogged } from '../interfaces/UserInterface';
 
 class UserController {
-  private $route: string;
 
   public service: UserService;
 
   constructor(
     service = new UserService(),
-    route = '/users',
   ) {
-    this.$route = route;
     this.service = service;
     this.signUp = this.signUp.bind(this);
     this.login = this.login.bind(this);
   }
 
-  get route() { return this.$route; }
-
   async signUp(
     req: RequestWithBody<User>,
-    res: Response<User | ResponseError>,
+    res: Response<UserLogged | ResponseError>,
   ): Promise<typeof res> {
     const { body } = req;
     try {
-      const user = await this.service.create(body);
-      if (!user) return res.status(StatusCode.INTERNAL_SERVER_ERROR).json({ error: 'Null Created' });
-      if ('error' in user) {
-        const { error } = user;
-        return res.status(StatusCode.BAD_REQUEST).json({ error: error.issues[0].message });
-      }
-      return res.status(StatusCode.CREATED).json(user);
+      const UserLogged = await this.service.signUp(body);
+      return res.status(StatusCode.CREATED).json(UserLogged);
     } catch (err) {
+      if (err instanceof CustomError) {
+        return res.status(err.status).json({ error: err.message });
+      }
       const { message } = err as Error;
       return res.status(StatusCode.INTERNAL_SERVER_ERROR).json({ error: message });
     }
@@ -42,23 +37,20 @@ class UserController {
 
   async login(
     req: RequestWithBody<UserLogin>,
-    res: Response<User | ResponseError>,
+    res: Response<UserLogged | ResponseError>,
   ): Promise<typeof res> {
     const { body } = req;
     try {
-      const user = await this.service.readOne(id);
-      if (!user) return res.status(StatusCode.NOT_FOUND).json({ error: 'Object not found' });
-      if ('error' in user) {
-        const { error } = user;
-        return res.status(StatusCode.BAD_REQUEST).json({ error: error.issues[0].message });
-      }
+      const user = await this.service.login(body);
       return res.status(200).json(user);
     } catch (err) {
+      if (err instanceof CustomError) {
+        return res.status(err.status).json({ error: err.message });
+      }
       const { message } = err as Error;
       return res.status(StatusCode.INTERNAL_SERVER_ERROR).json({ error: message });
     }
   }
-
 }
 
 export default UserController;

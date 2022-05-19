@@ -5,6 +5,7 @@ import { CustomError } from '../utils';
 import StatusCode from '../enums';
 import { Md5 } from "md5-typescript";
 import { signToken } from '../auth';
+import { UserLogged } from '../interfaces/UserInterface';
 
 class UserService {
 
@@ -14,12 +15,12 @@ class UserService {
     this.model = new UserModel();
   }
 
-  signUp = async ({ name, email, password }: User): Promise<string | ServiceError> => {
+  signUp = async ({ name, email, password }: User): Promise<UserLogged | ServiceError> => {
     const parsedUser = UserSchema.safeParse({ name, email, password });
     if (!parsedUser.success) {
       throw new CustomError(StatusCode.BAD_REQUEST, parsedUser.error.issues[0].message)
     }
-    const checkEmail = this.model.findByEmail(email);
+    const checkEmail = await this.model.findByEmail(email);
     if (checkEmail) {
       throw new CustomError(StatusCode.CONFLICT, 'Email already registered');
     }
@@ -29,17 +30,23 @@ class UserService {
       password: Md5.init(password)
     }
     console.log(newUser);
-    const { id } = this.model.create(newUser);
+    const { id } = await this.model.create(newUser);
     const token = signToken({ id, name, email});
-    return token;
+    const UserLogged = {
+      id,
+      name,
+      email,
+      token
+    }
+    return UserLogged;
   };
 
-  login = async ({ email, password }: UserLogin): Promise<string | ServiceError> => {
+  login = async ({ email, password }: UserLogin): Promise<UserLogged | ServiceError> => {
     const parsedUserLogin = UserLoginSchema.safeParse({ email, password });
     if (!parsedUserLogin.success) {
       throw new CustomError(StatusCode.BAD_REQUEST, parsedUserLogin.error.issues[0].message);
     }
-    const user = this.model.findByEmail(email);
+    const user = await this.model.findByEmail(email);
     if (!user) {
       throw new CustomError(StatusCode.NOT_FOUND, 'Email not Found');
     }
@@ -48,7 +55,13 @@ class UserService {
       throw new CustomError(StatusCode.UNAUTHORIZED, 'Password does not match');
     }
     const token = signToken({ id, name, email });
-    return token;
+    const UserLogged = {
+      id,
+      name,
+      email,
+      token
+    }
+    return UserLogged;
   };
 
 }
