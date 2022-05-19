@@ -44,7 +44,6 @@ class TaskController {
     try {
       const { id: user_id } = res.locals.tokenData;
       const tasks = await this.service.readAllByUser(user_id);
-      if (!tasks) return res.status(StatusCode.NOT_FOUND).json({ error: 'Task not found' });
       return res.status(StatusCode.OK).json(tasks);
     } catch (err) {
       if (err instanceof CustomError) {

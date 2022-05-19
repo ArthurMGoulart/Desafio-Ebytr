@@ -18,7 +18,7 @@ class TaskService {
     return this.model.create(obj);
   };
 
-  readAllByUser = async (user_id: string): Promise<Task[] | null> => {
+  readAllByUser = async (user_id: string): Promise<Task[]> => {
     const tasksFound = this.model.readAllByUser(user_id);
     return tasksFound;
   }

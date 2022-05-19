@@ -22,7 +22,7 @@ class TaskModel implements ModelTask {
   
   create = async (task: Task): Promise<Task> => this.model.create({ ...task });
 
-  readAllByUser = async (user_id: string): Promise<Task[] | null> => this.model.find({ user_id });
+  readAllByUser = async (user_id: string): Promise<Task[]> => this.model.find({ user_id });
   
   readOne = async (id: string): Promise<Task | null> =>
     this.model.findById(id);
