@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import Controller from '../controllers/ControllerCRUD';
+import { validateJWT } from '../middlewares';
 
 class CustomRouterCRUD<T> {
   public router: Router;
@@ -12,11 +13,11 @@ class CustomRouterCRUD<T> {
     controller: Controller<T>,
     route: string = controller.route,
   ) {
-    this.router.get(route, controller.read);
-    this.router.get(`${route}/:id`, controller.readOne);
-    this.router.post(route, controller.create);
-    this.router.put(`${route}/:id`, controller.update);
-    this.router.delete(`${route}/:id`, controller.delete);
+    this.router.get(route, validateJWT,controller.read);
+    this.router.get(`${route}/:id`, validateJWT, controller.readOne);
+    this.router.post(route, validateJWT, controller.create);
+    this.router.put(`${route}/:id`, validateJWT, controller.update);
+    this.router.delete(`${route}/:id`, validateJWT, controller.delete);
   }
 }
 
