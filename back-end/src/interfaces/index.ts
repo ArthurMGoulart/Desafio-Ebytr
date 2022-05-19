@@ -1,12 +1,13 @@
-import { ModelCRUD } from './ModelCRUDInterface';
+import { ModelTask } from './ModelCRUDInterface';
 import { ModelUser } from './ModelUserInterface';
 import { User, UserSchema, UserLogin, UserLoginSchema } from './UserInterface';
 import { Task, TaskSchema } from './TaskInterface';
 import IdSchema from './IdInterface';
 import ITokenData from './token';
+import { ResponseError, RequestWithBody } from './RequestResponse';
 
 export {
-  ModelCRUD,
+  ModelTask,
   ModelUser,
   User,
   UserSchema,
@@ -15,5 +16,7 @@ export {
   Task,
   TaskSchema,
   IdSchema,
-  ITokenData
+  ITokenData,
+  ResponseError,
+  RequestWithBody,
 }

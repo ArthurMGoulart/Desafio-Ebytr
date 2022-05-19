@@ -1,7 +1,8 @@
-export interface ModelCRUD<T> {
-  create: (obj: T) => Promise<T>
-  read: () => Promise<T[]>
-  readOne: (id: string) => Promise<T | null>
-  update: (id: string, obj: T) => Promise<T | null>
-  delete: (id: string) => Promise<T | null>
+import { Task } from '../interfaces';
+export interface ModelTask {
+  create: (task: Task) => Promise<Task>
+  readAllByUser: (user_id: string) => Promise<Task[] | null>
+  readOne: (id: string) => Promise<Task | null>
+  update: (id: string, task: Task) => Promise<Task | null>
+  delete: (id: string) => Promise<Task | null>
 }

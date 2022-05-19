@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { RequestWithBody, ResponseError } from './ControllerCRUD';
+import { RequestWithBody, ResponseError } from '../interfaces';
 import { UserService } from '../services';
 import { User, UserLogin } from '../interfaces';
 import StatusCode from '../enums';

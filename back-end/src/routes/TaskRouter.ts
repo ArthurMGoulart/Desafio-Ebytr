@@ -13,7 +13,7 @@ class TaskRouter {
   public addRoute(
     controller: TaskController
   ) {
-    this.router.get('/tasks', validateJWT, controller.read);
+    this.router.get('/tasks', validateJWT, controller.readAllByUser);
     this.router.get('/tasks/:id', validateJWT, validateUserCreated, controller.readOne);
     this.router.post('/tasks', validateJWT, controller.create);
     this.router.put('/tasks/:id', validateJWT, validateUserCreated, controller.update);

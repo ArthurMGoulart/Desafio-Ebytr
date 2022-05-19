@@ -1,12 +1,13 @@
 import { Task, TaskSchema, IdSchema } from '../interfaces';
-import Service from './ServiceCRUD';
 import { TaskModel } from '../models';
 import { CustomError } from '../utils';
 import StatusCode from '../enums';
 
-class TaskService extends Service<Task> {
-  constructor(model = new TaskModel()) {
-    super(model);
+class TaskService {
+  protected model: TaskModel;
+
+  constructor() {
+    this.model = new TaskModel();
   }
 
   create = async (obj: Task): Promise<Task> => {
@@ -16,6 +17,11 @@ class TaskService extends Service<Task> {
     }
     return this.model.create(obj);
   };
+
+  readAllByUser = async (user_id: string): Promise<Task[] | null> => {
+    const tasksFound = this.model.readAllByUser(user_id);
+    return tasksFound;
+  }
 
   readOne = async (id: string): Promise<Task | null> => {
     const parsedId = IdSchema.safeParse({ id });
