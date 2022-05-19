@@ -17,7 +17,7 @@ function Register() {
   const onSubmit = (data) => api.post('/register', data)
     .then((response) => {
       localStorage.setItem('user', JSON.stringify(response.data));
-      navigate('/customer/products');
+      navigate('/user/tasks');
     })
     .catch(({ response }) => setInvalidRegister(response.data));
 
