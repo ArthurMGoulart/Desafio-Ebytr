@@ -21,9 +21,11 @@
   - Para isso, use o seguinte comando: `touch .env`
 
   - O arquivo deve ter o certo formato:
+    ```shell
     MONGO_USER={Seu Usuário no Mongo Atlas}
     MONGO_PASSWORD={Sua Senha do Usuário no Mongo Atlas}
     NODE_ENV=development
+    ```
 
  5. Inicie a api
   - Para isso, use o seguinte comando: `npm start`
