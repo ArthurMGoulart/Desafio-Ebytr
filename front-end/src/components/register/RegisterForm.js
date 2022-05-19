@@ -14,7 +14,7 @@ function Register() {
 
   const navigate = useNavigate();
 
-  const onSubmit = (data) => api.post('/register', data)
+  const onSubmit = (data) => api.post('/signUp', data)
     .then((response) => {
       localStorage.setItem('user', JSON.stringify(response.data));
       navigate('/user/tasks');
