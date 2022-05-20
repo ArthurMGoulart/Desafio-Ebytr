@@ -7,7 +7,7 @@ import api from '../../services/api';
 
 function TaskForm() {
   const [invalidTask, setInvalidTask] = useState();
-  const { task, handleSubmit, formState: { errors, isDirty, isValid } } = useForm({
+  const { register, handleSubmit, formState: { errors, isDirty, isValid } } = useForm({
     resolver: yupResolver(taskValidate),
     mode: 'onChange',
   });
@@ -15,17 +15,27 @@ function TaskForm() {
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    const { user_id } = JSON.parse(localStorage.getItem('user'));
+    const { id, token } = JSON.parse(localStorage.getItem('user'));
+    console.log(id);
+    console.log(token)
     const newTask = {
-      user_id,
+      user_id: id,
       ...data
     }
-    api.post('/tasks', newTask)
-    .then(() => {
-      navigate('/user/tasks');
-    }).catch(({ response }) => setInvalidTask(response.data));
+    console.log(newTask)
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': token
+    }
+    api.post('/tasks', newTask, {
+      headers: headers
+    })
+      .then((response) => {
+        console.log(response)
+        navigate('/user/tasks');
+      }).catch(({ response }) => setInvalidTask(response.data));
   }
-  
+
   return (
     <form onSubmit={ handleSubmit(onSubmit) }>
       <div>
@@ -37,7 +47,7 @@ function TaskForm() {
             id="description"
             name="description"
             type="text"
-            { ...task('description') }
+            { ...register('description') }
           />
           <p>
             { errors.description?.message }
@@ -53,7 +63,7 @@ function TaskForm() {
             id="status"
             name="status"
             type="text"
-            { ...task('status') }
+            { ...register('status') }
           />
           <p>
             { errors.status?.message }
