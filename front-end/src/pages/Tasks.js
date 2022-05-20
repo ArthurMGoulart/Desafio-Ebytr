@@ -1,9 +1,9 @@
 import React from 'react';
 import TaskCard from '../components/task/TaskCard';
-import useRequestSalesSeller from '../components/hooks/sales/useRequestSalesSeller';
+import useRequestTasksUser from '../components/hooks/tasks/useRequestTasksUser';
 
 function SellerOrders() {
-  const [tasks] = useRequestSalesSeller();
+  const [tasks] = useRequestTasksUser();
 
   return (
     <div>

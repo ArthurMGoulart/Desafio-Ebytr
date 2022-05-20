@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import api from '../../../services/api';
 
-function useRequestSalesSeller() {
+function useRequestTasksUser() {
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
@@ -16,4 +16,4 @@ function useRequestSalesSeller() {
   return [tasks];
 }
 
-export default useRequestSalesSeller;
+export default useRequestTasksUser;
